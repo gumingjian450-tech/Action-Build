@@ -682,7 +682,7 @@ jobs:
             echo "KSU_CUSTOM_TAG=$KSU_CUSTOM_TAG" >> "$GITHUB_ENV"
           fi
           if [[ -n "$MANUAL_HASH" ]]; then
-            git fetch origin "$KSU_BUILTIN_BRANCH" --depth=50
+            git fetch origin "$KSU_BUILTIN_BRANCH" --depth=1000
             git checkout "$MANUAL_HASH"
           fi
 
