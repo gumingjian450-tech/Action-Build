@@ -233,7 +233,7 @@ jobs:
           # 动态调用源码清单仓库，仓库优先级：1️⃣ OnePlusOSS → 2️⃣ Dynamic → 3️⃣ Appendix
           DYNAMIC_REPO_INPUT="${{ github.event.inputs.DYNAMIC_REPO }}"
           declare -A REPOS
-          REPOS["OnePlusOSS"]="OnePlusOSS|kernel_manifest"
+          REPOS["OnePlusOSS"]="gumingjian450-tech|kernel_manifest"
           REPOS["Dynamic"]="${DYNAMIC_REPO_INPUT}|kernel_manifest"
           REPOS["Appendix"]="Numbersf|Kernel_Manifest_Appendix"
 
@@ -288,8 +288,10 @@ jobs:
           echo "解析 FILE 获取 CPU 和 ANDROID_VERSION..."
           # 提取 CPU
           CPU=$(echo "$REVISION" | sed -E 's#^(oneplus|realme|oppo)/([^_]+).*#\2#')
+          [[ "$CPU" =~ ^sm[0-9]+$ ]] || CPU="sm8750"
           # 提取 ANDROID_VERSION
-          ANDROID_VERSION=$(echo "$REVISION" | grep -oP '\d+\.\d+(\.\d+)?')
+          ANDROID_VERSION=$(echo "$REVISION" | grep -oP '\d+\.\d+(\.\d+)?' || true)
+          [[ -z "$ANDROID_VERSION" ]] && ANDROID_VERSION="16.0.0"
           if [[ -n "$CPU" && -n "$ANDROID_VERSION" ]]; then
             echo "✅ CPU=$CPU, ANDROID_VERSION=$ANDROID_VERSION"
             echo "CPU=$CPU" >> $GITHUB_ENV
